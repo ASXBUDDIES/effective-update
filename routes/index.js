@@ -19,11 +19,15 @@ var success = function (data) {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('setup', { title: 'Express' });
+});
+
+router.get('/wall', function(req, res, next) {
+  res.render('index');
 });
 
 router.post('/getTweets', function(req, res, next) {
-  twitter.getSearch({'q': req.body.query, 'count': 15}, function(error){
+  twitter.getSearch({'q': req.body.query, 'count': 100}, function(error){
       console.log(error);
   }, function(data) {
       res.send(data);

@@ -1,107 +1,30 @@
 var tweets = Array(0);
 var graph;
-var teamTasks = [
-    {
-        hashtag: '#river',
-        completed: false
-    },
-    {
-        hashtag: '#wave',
-        completed: false
-    },
-    {
-        hashtag: '#arm',
-        completed: false
-    },
-    {
-        hashtag: '#ceiling',
-        completed: false
-    },
-    {
-        hashtag: '#cat',
-        completed: false
-    },
-];
-var teamData = [
-    {
-        hashtag: '#fireants',
-        tasks: teamTasks,
-        score: 0
-    },
-    {
-        hashtag: '#ELITE',
-        tasks: teamTasks,
-        score: 0
-    },
-    {
-        hashtag: '#largemammals',
-        tasks: teamTasks,
-        score: 0
-    },
-    {
-        hashtag: '#cemungutmama',
-        tasks: teamTasks,
-        score: 0
-    },
-    {
-        hashtag: '#UTS',
-        tasks: teamTasks,
-        score: 0
-    },
-    {
-        hashtag: '#spokenderp',
-        tasks: teamTasks,
-        score: 0
-    },
-    {
-        hashtag: '#milkobar',
-        tasks: teamTasks,
-        score: 0
-    },
-    {
-        hashtag: '#controlfreeks',
-        tasks: teamTasks,
-        score: 0
-    },
-];
-
+var GET;
+var config = Object();
 var teamHashtags = Array();
-teamData.forEach(function(team) {
-    teamHashtags.push(team.hashtag);
-});
-
 var teamScores = Array();
-teamData.forEach(function(team) {
-    teamScores.push(team.score);
-});
-
-var query = "#movie";
+var backgroundColors = Array();
+var borderColors = Array();
 
 $(function() {
+    var url = Qurl.create();
+    GET = url.query();
+    
+    storeConfig();
+    setTitles();
+    generateColors();
+    
     var ctx = $("#chart");
     window.graph = new Chart(ctx, {
     type: 'bar',
     data: {
         labels: teamHashtags,
         datasets: [{
-            label: '# of Votes',
+            label: 'Points',
             data: teamScores,
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
+            backgroundColor: backgroundColors,
+            borderColor: borderColors,
             borderWidth: 1
         }]
     },
@@ -119,6 +42,8 @@ $(function() {
         maintainAspectRatio: false,
     }
 });
+    
+    console.log(window.graph);
     
     getNewTweets();
     cycleTweets();
@@ -178,7 +103,7 @@ function removeTweets() {
 
 function getNewTweets() {
     $.post('/getTweets', {
-        'query': query
+        'query': config.eventHashTag
     }, function(data) {
         data = JSON.parse(data);
         var duplicate = false;
@@ -218,24 +143,97 @@ function containsHashtag(tweet, hashtag) {
 function countScore() {
     var graphData = window.graph.config.data.datasets[0].data;
     
-    teamData.forEach(function(team) {
+    config.teamData.forEach(function(team) {
         team.score = 0;
     });
     tweets.forEach(function(tweet) {
-        teamData.forEach(function(team) {
+        config.teamData.forEach(function(team) {
             if (containsHashtag(tweet, team.hashtag)) {
                 team.tasks.forEach(function(task) {
                     if (containsHashtag(tweet, task.hashtag)) {
                         task.completed = true;
-                        team.score += 10;
+                        team.score += parseInt(task.points);
                     }
                 });
             }
         });
     });
     for (var i=0; i<graphData.length; i++) {
-        graphData[i] = teamData[i].score;
+        graphData[i] = config.teamData[i].score;
     }
     graph.update();
     console.log(tweets);
+}
+
+function storeConfig() {
+
+    config.teamData = [];
+    var GETtaskHashtags = [];
+    var GETtaskPoints = [];
+    var GETteamHashtags = [];
+    
+    var tasks = [];
+    
+    var i = 0;
+    
+    _.each(GET, function(item, key) {
+        
+        if (key.includes("eventHashtag")) {
+            config.eventHashTag = item;
+        } else if (key.includes("eventName")) {
+            config.eventName = item;
+        } else if (key.includes("taskHashtag")) {
+            GETtaskHashtags.push(item);
+        } else if (key.includes("taskPoints")) {
+            GETtaskPoints.push(item);
+        } else if (key.includes("teamHashtag")) {
+            GETteamHashtags.push(item);
+        }
+        
+    });
+    
+    GETtaskHashtags.forEach(function(item) {
+        tasks[i] = {
+            hashtag: item,
+            points: GETtaskPoints[i],
+            completed: false
+        };
+        i++;
+    });
+    
+    i = 0;
+    
+    GETteamHashtags.forEach(function(item) {
+        config.teamData[i] = {
+            hashtag: item,
+            tasks: tasks,
+            score: 0
+        };
+        i++;
+    });
+    
+    teamHashtags = GETteamHashtags;
+    teamScores = Array(GETteamHashtags.length);
+}
+
+function setTitles() {
+    var title = config.eventName.replace(/\+/g," ");
+    var mainHashtag = config.eventHashTag;
+    
+    $(".mainTitle").empty();
+    $(".mainTitle").append(title);
+    
+    $(".mainHashtags").empty();
+    $(".mainHashtags").append(mainHashtag + " | #TEAMNAME | #TASKNAME");
+}
+
+function generateColors() {
+    var i = 0;
+    teamHashtags.forEach(function(item) {
+        var randomColor = "rgba(" + Math.floor(Math.random()*255) + ", " + Math.floor(Math.random()*255) + ", " + Math.floor(Math.random()*255);
+        backgroundColors.push(randomColor + ", 0.4)");
+        borderColors.push(randomColor + ", 1)");
+        i++;
+    });
+    console.log(window.graph);
 }
