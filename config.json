@@ -1,0 +1,14 @@
+{
+    [
+        {
+            hashtag: '#fireants',
+            tasks: [
+                {
+                    hashtag: '#cat',
+                    completed: false
+                }
+            ],
+            score: 0
+        }
+    ]
+}

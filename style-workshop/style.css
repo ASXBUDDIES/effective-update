@@ -96,3 +96,40 @@ h1 {
     font-size: 20pt;
     min-height: 75px;
 }
+
+
+
+
+
+
+#setupForm {
+    padding: 20px 40px;
+}
+
+#setupForm h2 {
+    margin: 10px 0px;
+    color: grey;
+}
+
+#setupForm label {
+    font-family: 'Lato', sans-serif;
+    margin: 10px;
+}
+
+#setupForm input {
+    margin: 4px 0px;
+    border-radius: 3px;
+    border: 1px solid #d1d1d1;
+    padding: 8px;
+    min-width: 200px;
+}
+
+.submitButton {
+    transition: 0.2s;
+    transform: translate(10px, 20px);
+}
+
+.submitButton:hover {
+    box-shadow: 0px 0px 10px deepskyblue;
+    cursor: pointer;
+}

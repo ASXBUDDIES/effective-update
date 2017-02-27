@@ -30,4 +30,12 @@ router.post('/getTweets', function(req, res, next) {
   });
 });
 
+router.post('/submitSetup', function(req, res, next) {
+  var params = reg.body;
+    
+    params.forEach(function(item) {
+        
+    });
+});
+
 module.exports = router;
