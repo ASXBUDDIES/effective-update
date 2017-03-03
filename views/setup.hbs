@@ -1,29 +1,39 @@
 <!doctype html>
 
 <html>
-	<head>
-		<title>BCII Twitterwall | Setup</title>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="initial-scale=1.0">
-		<link rel="stylesheet" type="text/css" href="stylesheets/animate.css">
-		<link rel="stylesheet" type="text/css" href="stylesheets/style.css">
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.js"></script>
-		<script type="text/javascript" src="javascripts/setup.js"></script>
-	</head>
 
-	<body style="overflow: auto;">
-        <nav>
-            <h1 class="mainTitle">Setup</h1>
-        </nav>
-        <section class="setupContent">
-            <form action="/wall" method="get" name="setupForm" id="setupForm">
-                <h2>General</h2>
-                <label>Event Name:</label>
-                <input name="eventName" placeholder="e.g. BCII Scavenger Hunt 2017">
-                <br>
-                <label>Event Hashtag:</label>
-                <input name="eventHashtag" placeholder="e.g. #bciiisawesome">
+<head>
+    <title>BCII Twitterwall | Setup</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="stylesheets/animate.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.js"></script>
+    <script type="text/javascript" src="javascripts/setup.js"></script>
+</head>
+
+<body style="overflow: auto;">
+    <nav>
+        <h1 class="mainTitle">Setup</h1>
+    </nav>
+    <section class="setupContent">
+        <form action="/wall" method="get" name="setupForm" id="setupForm">
+            <h2>General</h2>
+            <label>Event Name:</label>
+            <input name="eventName" placeholder="e.g. BCII Scavenger Hunt 2017">
+            <br>
+            <label>Event Hashtag:</label>
+            <input name="eventHashtag" placeholder="e.g. #bciiisawesome">
+            <br>
+            <label>Leaderboard:</label>
+            <select name="leaderboard" class="leaderboardQuestion">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+            <br class="break" hidden>
+            <br class="break" hidden>
+            <div class="leaderboardSetup">
                 <h2>Tasks</h2>
                 <label>Number of Tasks per Team:</label>
                 <input class="numberOfTasks" name="numberOfTasks" placeholder="e.g. 4">
@@ -44,8 +54,10 @@
                         <input name="teamHashtag0" placeholder="e.g. #teamdynamite">
                     </div>
                 </div>
-                <input class="submitButton" type="submit" name="Submit">
-            </form>
-        </section>
-	</body>
+            </div>
+            <input class="submitButton" type="submit" name="Submit">
+        </form>
+    </section>
+</body>
+
 </html>

@@ -6,10 +6,16 @@ var teamHashtags = Array();
 var teamScores = Array();
 var backgroundColors = Array();
 var borderColors = Array();
+var tweetsPerFetch = 3;
 
 $(function() {
     var url = Qurl.create();
     GET = url.query();
+    
+    if (GET.leaderboard == 0) {
+        $(".leaderboard").hide();
+        tweetsPerFetch = 6;
+    }
     
     storeConfig();
     setTitles();
@@ -43,8 +49,6 @@ $(function() {
     }
 });
     
-    console.log(window.graph);
-    
     getNewTweets();
     cycleTweets();
     countScore();
@@ -74,8 +78,8 @@ function addTweet(profileUrl, text, imageUrl) {
 }
 
 function addTweets() {
-    var chosenNumbers = [0,1,2];
-    for (var i = 0; i<3; i++) {
+    var chosenNumbers = [0,1,2,3,4,5,6];
+    for (var i = 0; i<tweetsPerFetch; i++) {
         var randomIndex = Math.floor(Math.random()*tweets.length);
 
         while (chosenNumbers.includes(randomIndex)) {
@@ -121,7 +125,7 @@ function getNewTweets() {
 }
 
 function cycleTweets() {
-    if (tweets.length >= 3) {
+    if (tweets.length >= tweetsPerFetch) {
         removeTweets();
     }
 }

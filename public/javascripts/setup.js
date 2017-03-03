@@ -32,4 +32,26 @@ $(function() {
             ].join(""));
         }
     });
+    
+    $(".leaderboardQuestion").on("change", function() {
+        var val = this.value;
+        
+        if (val == 0) {
+            hideLeaderboard();
+        } else {
+            showLeaderboard();
+        }
+    });
 });
+
+function showLeaderboard() {
+    console.log("showing");
+    $(".leaderboardSetup").show(300);
+    $(".break").hide();
+}
+
+function hideLeaderboard() {
+    console.log("hiding");
+    $(".leaderboardSetup").hide(300);
+    $(".break").show();
+}
