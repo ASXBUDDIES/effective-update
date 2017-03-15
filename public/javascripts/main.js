@@ -43,6 +43,11 @@ $(function() {
                 ticks: {
                     beginAtZero:true
                 }
+            }],
+            xAxes: [{
+                ticks: {
+                    fontSize: 9
+                }
             }]
         },
         maintainAspectRatio: false,
